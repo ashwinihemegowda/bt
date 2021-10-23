@@ -1,0 +1,27 @@
+package com.torryharris.test;
+
+public class Calculator {
+    private int a;
+    private int b;
+
+    public Calculator() {
+    }
+
+
+    public int add(int a,int b)
+    {
+        return a+b;
+    }
+    public int sub(int a,int b)
+    {
+        return a-b;
+    }
+    public int mul(int a,int b)
+    {
+        return a*b;
+    }
+    public int div(int a,int b)
+    {
+        return a/b;
+    }
+}
