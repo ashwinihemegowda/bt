@@ -1,0 +1,22 @@
+
+h2, p ,#tab{
+  text-align: center;
+  color: white;
+
+
+}
+body {
+  background-image:url('abcd.jpg');
+  background-repeat:no-repeat;
+  background-position:right top;
+  background-color:red;
+  /*opacity:0.5;*/
+  text-align:center;
+}
+
+
+h1 {
+  color: navy;
+  margin-left: 20px;
+   border:2px solid violet;
+}
