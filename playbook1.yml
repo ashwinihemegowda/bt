@@ -1,0 +1,10 @@
+---
+
+- name: install http packages 
+  hosts: all
+  become: yes
+  tasks:
+   - name: install apache http
+     apt: 
+      name: apache2
+      state: present

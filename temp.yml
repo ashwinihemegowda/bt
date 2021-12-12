@@ -1,0 +1,13 @@
+---
+- name: install git and apache
+  hosts: all
+  become: yes
+  tasks:
+   - name: install git
+     apt:
+      name: git
+      state: present
+   - name: inatall apache
+     apt:
+      name: apache2
+      state: present
