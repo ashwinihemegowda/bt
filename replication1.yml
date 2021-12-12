@@ -1,0 +1,23 @@
+---
+kind: ReplicationController
+apiVersion: v1
+metadata: 
+ name: replica 
+ annotations:
+  description: this is replication controller
+spec: 
+ replicas: 3
+ selector:
+  company: thbs
+  
+ template: #pod area 
+  metadata: 
+   name: ashu
+   labels:
+    company: thbs
+  spec:
+   containers: 
+    - name: con1
+      image: ubuntu
+      command: ["/bin/bash", "-c", "while true; do echo hello; sleep 5; done;"]
+    

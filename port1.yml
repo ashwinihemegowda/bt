@@ -1,0 +1,15 @@
+kind: Pod
+apiVersion: v1
+metadata: 
+ name: testpods
+ labels:
+  name: testpod
+  class: kubernetes
+  company: thbs
+  env: stage
+spec:
+ containers:
+  - name: con1
+    image: httpd
+    ports:
+     - containerPort: 80

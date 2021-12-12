@@ -1,0 +1,17 @@
+---
+kind: Pod
+apiVersion: v1
+metadata:
+ name: testpod-new4
+spec:
+ containers:
+  - name: con1
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true; do echo Hello-World; sleep 5; done"]
+  - name: con2
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true; do echo Hello-World; sleep 5; done;"]
+  - name: con3
+    image: ashwinih2611/thbs:ansible_image
+    command: ["/bin/bash", "-c", "while true; do echo Hello-World; sleep 5; done;"]
+ restartPolicy: Never    

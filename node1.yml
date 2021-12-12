@@ -1,0 +1,22 @@
+---
+kind: Pod 
+apiVersion: v1
+metadata:
+ name: myenv-pod2
+ annotations: 
+  description: THis is pod with variable $MYNAME
+ labels: 
+  env: dev
+  class: devops
+  company: thbs
+   
+spec:
+ containers:
+  - name: con1
+    image: ubuntu
+    command: ["/bin/bash", "-c", "while true; do echo hello!!; sleep 5; done;"]
+    env:
+     - name: MYNAME
+       value: THBS
+ nodeSelector: 
+      company: thbs  
