@@ -1,0 +1,1137 @@
+ 
+
+If you are a Java Developer, your day to day activities while working on Java Projects includes writing code, compiling code, testing, packaging code in the form of an artifact like JAR, WAR or EAR and then deploying this artifact to an Application Server. 
+
+ 
+
+Apache Maven automates all the tasks which are mentioned above by minimizing the manual overhead. 
+
+ 
+
+ 
+
+Providing a uniform build system 
+
+Maven builds a project using its project object model (POM) and a set of plugins. Once you familiarize yourself with one Maven project, you know how all Maven projects build. This saves time when navigating many projects. 
+
+ 
+
+ 
+
+What is Apache Maven ? 
+
+Apache Maven is a Project Management Tool used to manage projects which are developed using JVM languages like Java, Scala, Groovy etc. 
+
+The major tasks of a Project Management Tool include: 
+
+Building the Source Code 
+
+Testing Source Code 
+
+Packaging the Source Code into an Artifact (ZIP, JAR, WAR or EAR) 
+
+Handles Versioning and Releases of the Artifacts 
+
+Generating JavaDocs from the Source Code 
+
+Managing Project Dependencies 
+
+Maven is also called as a Build Tool or a Dependency Management Tool 
+
+ 
+
+Installing Maven 
+
+You can download Maven from the website here.  
+
+ 
+
+Under the Files section, you can download Maven by clicking on the link which looks something like apache-maven-3.6.3-bin.zip 
+
+Once you have downloaded and unzipped the folder, make sure to add the M2_HOME environment variable and to set the value of this variable to location of the unzipped folder. 
+
+After that make sure to set another environment variable called M2 which contains the value M2_HOME/bin 
+
+ 
+
+ 
+
+After that, make sure to update the Path variable also with the M2 environment variable. 
+
+ 
+
+Once you completed the above steps, open a new terminal window and type mvn –version and you should see the output like below: 
+
+ 
+
+ 
+
+Configure Maven Installation in IDE 
+
+The next step is to configure the maven installation inside your favorite IDE, in this tutorial we are going to use IntelliJ IDEA as the primary IDE. 
+
+You can download the community edition of this IDE here 
+
+Once you have installed the IDE, on the Welcome Window click on the Configure button and select Settings and inside the Settings Window search for Maven and under the Maven home directory choose the Maven directory. 
+
+ 
+
+ 
+
+Click on Apply and then OK 
+
+You configured Maven successfully in your IDE. Now it’s time to create our first Maven Project. 
+
+ 
+
+Create your First Maven Project 
+
+In IntelliJ, click on New Project and in the window, select Maven to the left side and click on Next. 
+
+Then enter your project name and if you expand the section Artifact Coordinates. 
+
+You will see the fields GroupId, ArtifactId and Version. 
+
+A GroupId is like a identifier for your project which usually follows the Java Package naming convention, so in our example IntelliJ has by default added the value org.example but you can add any value you like. 
+
+An ArtifactId is the name of the project you are creating 
+
+A Version is a unique number which identifies the version of our project. 
+
+ 
+
+Once you click on Finish, IntelliJ should open the project and the folder structure of the project will look something like the picture you see below. 
+
+ 
+
+ 
+
+Exploring Maven Folder Structure 
+
+Let’s have a look at the Folder Structure of the Maven Project we just created. 
+
+The src folder is the root for our application source code and tests. Then we have the following subfolders: 
+
+The folder src/main/java contains the java source code, all the production code for our application resides here 
+
+In the src/main/resources we will store all the files we are going to use in our project (example: Property Files, any files where we need to read in our application like XML, CSV etc.). If you are developing a web-application we will usually place all the static resources inside this folder. 
+
+In the src/test/java folder we will store all the test classes in our project. 
+
+There is another folder called target (currently not visible), which stores the compiled java class files. We will discuss about this in the coming sections 
+
+And lastly, we have the pom.xml file which contains the metadata of the project dependencies. 
+
+ 
+
+ 
+
+Maven Core Concepts 
+
+Project Object Model 
+
+The Project Object Model File(also called as pom.xml) contains the meta-data of the project and is also responsible to manage dependencies and to configure plugins which helps us in automating many repetitive tasks. 
+
+Here is how a basic pom.xml file looks like: 
+
+ 
+
+ 
+
+ 
+
+project is the top level tag of our pom.xml file, which encapsulates all the information related to our Maven Project. 
+
+modelVersion represents what version of POM you are using. The modelVersion for Maven 3 is always 4.0. This will never change unless you are using another major version of Maven. 
+
+Now as we know what is a POM file, let’s have a look at different type’s of POM files.  
+
+ 
+
+We have basically 3 types of POM files: 
+
+Simple POM file 
+
+Super POM file 
+
+Effective POM file 
+
+ 
+
+Simple POM File 
+
+This is the same file(pom.xml) which was generated in the previous section. It only contains information which is relevant to our current project. 
+
+ 
+
+Super POM File 
+
+A Super POM File is a parent for all the Simple POM files, it contains a set of default configuration which is shared by all the Simple POM files. 
+
+You can find the Super POM file inside the Maven installation directory under the path M2_HOME/lib and inside the JAR file maven-model-builder-XXX.jar where XXX represents the version of the maven version you are using. 
+
+We can find it under the package name org.apache.maven.model under the file name pom-4.0.0.xml. 
+
+CAUTION: You should never try to edit the Super POM as it contains sensible defaults from Maven. 
+
+ 
+
+Effective POM File 
+
+An Effective POM File is nothing but a combination of Simple POM and Super POM File’s. 
+
+It’s just a way of checking all the information of the pom.xml files in one place. 
+
+We will have a look at how this will be helpful in the upcoming sections. 
+
+You can have a look at the Effective POM of our pom.xml file by typing the following command 
+
+mvn help:effective-pom 
+
+In IntelliJ, you can simply right click on the pom.xml file, select Maven -> Show Effective POM 
+
+ 
+
+ 
+
+Dependencies 
+
+If you are working on any non-trivial Java Project chances are that you are using many third party JAR files in your project to develop the application. These JAR files can be anything like a Framework or a Library. Examples include Junit, Spring Framework, Selenium etc. 
+
+ 
+
+These external libraries are called as dependencies. Maven provides an excellent way to specify and manage dependencies in our pom.xml file. 
+
+ 
+
+Without using Maven, you have to manually download the required JAR files from internet and add them one-by-one to the classpath of our project. 
+
+ 
+
+Maven provides a dependencies section inside the pom.xml where you can specify the information of the JAR you require in your project (groupId, artifactId and version). Once you have specified the required libraries, maven will automatically download these dependencies into our project and adds them to the classpath of our project. 
+
+ 
+
+Inside the dependencies section you can define each individual dependency like below inside the pom.xml file. 
+
+ 
+
+ 
+
+<?xml version="1.0" encoding="UTF-8"?> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> 
+    <modelVersion>4.0.0</modelVersion> 
+ 
+
+<groupId>org.example</groupId> 
+    <artifactId>maven-project</artifactId> 
+    <version>1.0-SNAPSHOT</version> 
+ 
+
+<dependencies> 
+        <dependency> 
+            <groupId>org.junit.jupiter</groupId> 
+            <artifactId>junit-jupiter-engine</artifactId> 
+            <version>5.5.2</version> 
+        </dependency> 
+    </dependencies> 
+</project> 
+
+ 
+
+We have defined Junit5 as a dependency in our pom.xml file. 
+
+ 
+
+Notice that I have mentioned the tags groupId, artifactId and version to uniquely identify a dependency  
+
+and by providing these values, Maven can automatically download these dependencies to our project. 
+
+In IntelliJ, make sure to click on the Refresh button under the Maven Tab in the right side, to force IntelliJ to initiate the download of the dependencies. Check the below image: 
+
+ 
+
+ 
+
+Maven-Dependencies-1.png?resize=1536%2C725&ssl=1 (880×415)
+ 
+
+ 
+
+Excluding Dependencies 
+
+There are some instances where we will have some conflicts between the project dependencies and the transitive dependencies, at that time we can manually exclude the transitive dependency we don’t need. 
+
+ 
+
+For example, if you are developing your application using Spring Boot, there is a dependency called spring-boot-starter-test which will provide all the dependencies needed to test the Spring Boot applications. 
+
+ 
+
+This spring-boot-starter-test dependency contains Junit 4 as the transitive dependency, as we are already using Junit 5 we can exclude the transitive dependency like below: 
+
+ 
+
+ 
+
+<?xml version="1.0" encoding="UTF-8"?> 
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> 
+    <modelVersion>4.0.0</modelVersion> 
+ 
+
+<groupId>org.example</groupId> 
+    <artifactId>maven-project</artifactId> 
+    <version>1.0-SNAPSHOT</version> 
+ 
+
+<dependencies> 
+        <dependency> 
+            <groupId>org.junit.jupiter</groupId> 
+            <artifactId>junit-jupiter-engine</artifactId> 
+            <version>5.5.2</version> 
+        </dependency> 
+        <dependency> 
+            <groupId>org.springframework.boot</groupId> 
+            <artifactId>spring-boot-starter-test</artifactId> 
+            <version>2.1.6.RELEASE</version> 
+            <scope>test</scope> 
+            <exclusions> 
+                <exclusion> 
+                    <groupId>junit</groupId> 
+                    <artifactId>junit</artifactId> 
+                </exclusion> 
+            </exclusions> 
+        </dependency> 
+    </dependencies> 
+</project> 
+
+ 
+
+ 
+
+ 
+
+SNAPSHOT and RELEASE dependencies 
+
+A dependency can be categorized into two ways: 
+
+ 
+
+SNAPSHOT 
+
+RELEASE A Snapshot Dependency resembles that the project version is under development. 
+
+If you are working on a Java project in a team, chances are that you are following some kind of iterative process where you go through the phases of development and then release the software at the end of the phase. 
+
+ 
+
+When the project is under development we generally use the SNAPSHOT dependencies, which looks something like 1.0-SNAPSHOT 
+
+ 
+
+project xmlns="http://maven.apache.org/POM/4.0.0" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"> 
+    <modelVersion>4.0.0</modelVersion> 
+ 
+
+<groupId>org.example</groupId> 
+    <artifactId>maven-project</artifactId> 
+    <version>1.0-SNAPSHOT</version> 
+</project> 
+
+ 
+
+ 
+
+When the software is ready for release, we generally create a RELEASE version which looks like 1.0.RELEASE (ex: Spring Boot Starter Test dependency) 
+
+ 
+
+<dependency> 
+    <groupId>org.springframework.boot</groupId> 
+    <artifactId>spring-boot-starter-test</artifactId> 
+    <version>2.1.6.RELEASE</version> 
+    <scope>test</scope> 
+    <exclusions> 
+        <exclusion> 
+            <groupId>junit</groupId> 
+            <artifactId>junit</artifactId> 
+        </exclusion> 
+    </exclusions> 
+</dependency> 
+
+ 
+
+ 
+
+Dependency Scopes 
+
+Each Maven Dependency can be categorized 6 different scopes. 
+
+Here are the list of scopes available: 
+
+compile: This is the default scope if none is specified. Compile time dependencies are available in classpath of the project. 
+
+provided: Similar to compile scope, but indicates that the JDK or the underlying container will provide the dependency at run-time. The dependency will be available at compile time, but not packaged into the artifact. An example of the usage is the javax.servlet-api dependency 
+
+runtime: The dependencies defined with this scope will be only available at runtime but not at compile time. An example of the usage: Imagine if you are using MySQL Driver inside your project, you can add the dependency with scope as runtime, to ensure that the JDBC API abstraction is used instead of MySQL Driver API during implementation.  
+
+ 
+
+If the source code includes any classes which is part of the MySQL JDBC API, then the code wont compile as the dependency is unavailable at compile time. 
+
+test: Dependencies are only available at the time of running the tests, typical examples include Junit and TestNG 
+
+system: It’s similar to the provided scope, but only difference is we need to explicitly mention where can the dependency be found in the system, using the systemPath tag: 
+
+<systemPath>${basedir}/lib/some-dependency.jar</systemPath> 
+
+ 
+
+ 
+
+<dependency> 
+
+    <groupId>javax.servlet</groupId> 
+
+    <artifactId>servlet-api</artifactId> 
+
+    <version>3.0.1</version> 
+
+    <scope>provided</scope> 
+
+</dependency> 
+
+ 
+
+ 
+
+ 
+
+Repositories 
+
+In the previous section, we saw how Maven manages and automatically downloads the dependencies. 
+
+These dependencies, are stored inside a special directory called Repository. There are basically 2 kinds of repositories: 
+
+Local Repository A Local Repository is a directory on the machine where the Maven is running. 
+
+The default location for the Local Repository is /.m2 
+
+In Windows, it looks like: 
+
+C:\Users<user-name>.m2\repository 
+
+Remote Repository A Remote Repository is a web-site where we can download Maven Dependencies. This can be a repository provided by Maven (repo.maven.org) or a custom repository setup inside an organization using software like Artifactory or Nexus. Now that we saw different types of repositories, let’s see how Maven Resolves the dependencies. 
+
+ 
+
+ 
+
+ 
+
+Now let’s see how Maven Resolves the dependencies. 
+
+ 
+
+ 
+
+Repositories.png?w=631&ssl=1 (631×261)
+ 
+
+When you define a dependency defined inside the pom.xml file, Maven first checks whether the dependency is already present in the Local Repository or not. 
+
+If it is not, then it tries to connect to the Remote Repository, (Ex: https://repo.maven.org) and tries to download the dependencies, and store them inside the Local Repository. We can define the Remote Repository in our pom.xml like below: 
+
+ 
+
+<repositories> 
+  <repository> 
+    <id>my-internal-site</id> 
+    <url>http://myserver/repo</url> 
+  </repository> 
+</repositories> 
+
+ 
+
+Maven Build Lifecycle 
+
+Till now we learned about the Core Concepts of Maven, now it’s time to dive deep and understand how Maven builds our Java Project. 
+
+Maven follows a Build Lifecycle to well… build our project. 
+
+ 
+
+This Lifecycle is divided into 3 parts: 
+
+default 
+
+clean 
+
+Site 
+
+ 
+
+Each Lifecycle is independent of each other and they can be executed together. 
+
+The default life cycle is divided into different phases like below: 
+
+ 
+
+validate – verifies whether the pom.xml file is valid or not 
+
+compile – compiles the source code inside the project 
+
+test – runs unit-tests inside the project 
+
+package – packages the source code into an artifact (ZIP, JAR, WAR or EAR) 
+
+integration-test– executes tests marked as Integration Tests 
+
+verify – checks whether the created package is valid or not. 
+
+install – installs the created package into our Local Repository 
+
+deploy – deploys the created package to the Remote Repository 
+
+ 
+
+The clean lifecycle is mainly responsible to clean the .class and meta-data generated by the above build phases.  Delete target directory as well 
+
+ 
+
+ 
+
+The site lifecycle phase is responsible to generate Java Documentation. 
+
+ 
+
+https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#lifecycle-reference 
+
+ 
+
+Plugins and Goals 
+
+To be able to execute these Lifecycle Phases, Maven provides us with Plugins to perform each task. 
+
+Each plugin is associated with a particular Goal 
+
+Let’s have a look at different Plugins and the associated Goals: 
+
+ 
+
+Maven Compile Plugin 
+
+The Maven Compile Plugin is responsible to compile our Java files into the .class files. It’s equivalent of running javac 
+
+This plugin enables the compile phase of the default lifecycle. 
+
+You can add this plugin to your project by adding the below section to your pom.xml file under the dependencies 
+
+section. 
+
+ 
+
+ 
+
+<build> 
+    <plugins> 
+        <plugin> 
+            <groupId>org.apache.maven.plugins</groupId> 
+            <artifactId>maven-compiler-plugin</artifactId> 
+            <version>3.8.1</version> 
+        </plugin> 
+    </plugins> 
+</build> 
+
+ 
+
+ 
+
+After adding the plugin to the project, you can activate the compile phase, by typing the below command: 
+
+ 
+
+mvn compiler:compile 
+[INFO] Scanning for projects... 
+[INFO] 
+[INFO] ---------------------< org.example:maven-project >---------------------- 
+[INFO] Building maven-project 1.0-SNAPSHOT 
+[INFO] --------------------------------[ jar ]--------------------------------- 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-cli) @ maven-project --- 
+[INFO] Nothing to compile - all classes are up to date 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] BUILD SUCCESS 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] Total time:  0.729 s 
+[INFO] Finished at: 2020-12-04T20:16:23+01:00 
+[INFO] ------------------------------------------------------------------------ 
+
+ 
+
+ 
+
+In the above command the compiler is the name of the plugin and compile is the goal which triggers the lifecycle phase – compile 
+
+ 
+
+As there are no Java Files in our project, there is nothing to compile, so let’s create a simple HelloWorld.java file 
+
+ 
+
+public class HelloWorld { 
+    public static void main(String[] args) { 
+        System.out.println("Hello World"); 
+    } 
+} 
+
+ 
+
+mvn compiler:compile 
+
+If you try to compile again, you can see the following output: 
+
+ 
+
+We can see the generated class files under the target folder which resides just under the project root folder. 
+
+ 
+
+ 
+
+If you have some Test files, those are also compiled using the Compiler Plugin. 
+
+To demonstrate that let’s create the below Test class under the src/test/java folder 
+
+ 
+
+public class HelloWorldTest { 
+    public static void main(String[] args) { 
+        HelloWorld helloWorld = new HelloWorld(); 
+        System.out.println(helloWorld.say("Hi")); 
+    } 
+} 
+ 
+
+And here is how you can compile the test classes: 
+
+$ mvn compiler:testCompile 
+[INFO] Scanning for projects... 
+[INFO] 
+[INFO] ---------------------< org.example:maven-project >---------------------- 
+[INFO] Building maven-project 1.0-SNAPSHOT 
+[INFO] --------------------------------[ jar ]--------------------------------- 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-cli) @ maven-project --- 
+[INFO] Changes detected - recompiling the module! 
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent! 
+[INFO] Compiling 1 source file to F:\maven-project\target\test-classes 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] BUILD SUCCESS 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] Total time:  1.319 s 
+[INFO] Finished at: 2020-12-04T20:23:59+01:00 
+[INFO] ------------------------------------------------------------------------ 
+ 
+
+As you can see that a change has been detected by the Maven Compiler Plugin and it has compiled our Test classes to the target/test-classes folder 
+
+ 
+
+As we are using IntelliJ, we can also use it to run the compilation, by clicking on the compile button under the LifeCycle dropdown as you see in the below image: 
+
+ 
+
+If you run the compile option you may see the below error: 
+
+ 
+
+[INFO] Compiling 1 source file to F:\maven-project\target\classes 
+[INFO] ------------------------------------------------------------- 
+[ERROR] COMPILATION ERROR :  
+[INFO] ------------------------------------------------------------- 
+[ERROR] Source option 6 is no longer supported. Use 7 or later. 
+[ERROR] Target option 6 is no longer supported. Use 7 or later. 
+
+ 
+
+ 
+
+This is because, by default the Source and Target Compiler Version is set to 1.5 in IntelliJ Configuration. You can add the below configuration to the compiler plugin to override this settings: 
+
+ 
+
+<build> 
+    <plugins> 
+        <plugin> 
+            <groupId>org.apache.maven.plugins</groupId> 
+            <artifactId>maven-compiler-plugin</artifactId> 
+            <version>3.8.1</version> 
+            <configuration> 
+                <source>15</source> 
+                <target>15</target> 
+            </configuration> 
+        </plugin> 
+    </plugins> 
+</build> 
+
+ 
+
+ 
+
+Maven Surefire Plugin 
+
+Using Surefire Plugin, we can run the tests inside our project by using the following command: 
+
+ 
+
+mvn test 
+
+ 
+
+The Surefire Plugin generates Text and XML reports under the target/surefire-reports folder. 
+
+ 
+
+ 
+
+Surefire Plugin by default includes all tests, if you have a bunch of tests, you can manually exclude some tests to be executed using below configuration: 
+
+ 
+
+<plugin> 
+    <groupId>org.apache.maven.plugins</groupId> 
+    <artifactId>maven-surefire-plugin</artifactId> 
+    <version>2.22.2</version> 
+    <configuration> 
+        <excludes>HelloWorldTest.java</excludes> 
+    </configuration> 
+</plugin> 
+
+ 
+
+mvn test 
+
+ 
+
+No test to run  
+
+ 
+
+Maven Install Plugin 
+
+This is used to package our source code into an artifact of our choice like a JAR and install it to our Local Repository which is /.m2/repository folder. 
+
+You can configure Maven Install Plugin by adding the below code: 
+
+ 
+
+<plugin> 
+    <groupId>org.apache.maven.plugins</groupId> 
+    <artifactId>maven-install-plugin</artifactId> 
+    <version>2.5.2</version> 
+</plugin> 
+
+ 
+
+You can run the install phase of the lifecycle by typing the below command: 
+
+ 
+
+ mvn install 
+
+ 
+
+By checking the above output, you can see that the install phase includes also the previous phases in the lifecycle, so as part of this phase maven: 
+
+validates our pom.xml (validate) 
+
+compiles our source code (compile) 
+
+executes our tests (test) 
+
+packages our source code into JAR (package) 
+
+installs the JAR into our local repository (install) 
+
+You can see the JAR file in the below screenshot under the target folder. 
+
+ 
+
+Intellij-Install-Plugin.png?w=759&ssl=1 (759×656)
+ 
+
+Maven Deploy Plugin 
+
+ 
+
+The Maven Deploy Plugin will deploy the artifact into a remote repository. The deploy goal of the plugin is associated with the deploy phase of the build lifecycle. 
+
+The plugin can be configured like below: 
+
+ 
+
+<plugin> 
+   <groupId>org.apache.maven.plugins</groupId> 
+   <artifactId>maven-deploy-plugin</artifactId> 
+   <version>2.8.2</version> 
+</plugin> 
+
+ 
+
+Before running the deploy phase of the lifecycle, we have to make sure that the remote repository details are configured inside our project. 
+
+We can configure this details inside the distributionManagement section: 
+
+ 
+
+<distributionManagement> 
+    <repository> 
+        <id>test-distribution</id> 
+        <name>distro name</name> 
+        <url>http://distrourl.com</url> 
+    </repository> 
+</distributionManagement> 
+
+ 
+
+To be able to connect to the remote repository, maven needs access to the credentials, which can be configured inside a special file called as settings.xml file. 
+
+This file is usually configured inside the /.m2/ folder, which looks like something below: 
+
+ 
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd"> 
+    <servers> 
+        <server> 
+            <id>test-distribution</id> 
+            <username>my_username</username> 
+            <password>my_password</password> 
+        </server> 
+    </servers> 
+</settings> 
+
+ 
+
+You can run the deploy goal using the following command: 
+
+$ mvn deploy 
+
+ 
+
+Maven Clean Plugin 
+
+Another important plugin in Maven is the Maven Clean Plugin, you saw that when running the above lifecycle phases, the generated files are stored under a folder called target. 
+
+ 
+
+Usually when building our source code we need to start of as a clean slate so that there are no inconsistencies in the generated class files or JAR. 
+
+For this reason we have the clean phase where we will delete all the contents inside the target folder.  
+
+ 
+
+You can execute this phase by typing the below commands: 
+
+ 
+
+mvn clean 
+
+ 
+
+ 
+
+Other Maven Plugins 
+
+There are many other plugins in Maven world, to execute other phases in the Maven Build Lifecycle, you can check them out here 
+
+ 
+
+Maven Multi Module Projects 
+
+Till now we saw the Core Concepts of Maven, now it’s time to dive deep into some advanced concepts. 
+
+In the real world where we are building some non-trivial projects, the source code is going to be modularized (hopefully) and is divided into different sub projects. 
+
+To manage this effectively, Maven provides us Multi Module Projects where you can have nest different projects inside each other. We are basically creating a parent-child relationship between different Maven projects. 
+
+Basically, we have a Parent Project (Parent POM) which contains different sub-projects (sub-modules), each of which is again a normal Maven Project. 
+
+Multi Module Project
+The Parent POM usually encapsulates other child’s and that’s why its packaged as a POM instead of usual packaing format’s like JAR. 
+
+If you recall the section Project Object Model , we discussed about Super POM which is basically a kind of Parent POM which encapsulates default settings configured by Maven for us. 
+
+ 
+
+ 
+
+Creating Multi Module Project using IntelliJ 
+
+We will see how to generate Multi Module Projects using our IntelliJ IDE. 
+
+To create the project, first right click on the project root folder and select New -> Module and click on Next. 
+
+ 
+
+ 
+
+You can see the new project structure in the above picture after we created the child project. 
+
+Now if you open the pom.xml under the root folder, you can observe the following tags which are added by creating the maven module. 
+
+    <modules> 
+        <module>child-project-1</module> 
+    </modules> 
+ 
+
+We can create multiple projects in the same way and you can see all the modules will be listed one-by-one under the modules tag. 
+
+ 
+
+And if you check the pom.xml of child-project-1,child-project-2 and child-project-3. You can see that the root project is configured as a parent project. 
+
+ 
+
+ 
+
+Now you can build all the projects at once by running the mvn install under the Parent Project, and Maven scans through all the POMS and builds all of them one-by-one 
+
+ 
+
+$ mvn install 
+
+ 
+
+ 
+
+You can see that Maven built all the projects and provided us a nice report of the Build Status of each project. 
+
+Maven uses something called as a Reactor which is responsible to scan the whole project and identify the parent and child maven projects. If there are any dependencies, then Reactor makes sure to execute the projects in the required order. 
+
+For example, if child-project-2 is dependent on child-project-3 , then Maven Reactor makes sure to first build child-project-3 and then child-project-2. 
+
+ 
+
+Using Profiles 
+
+Profiles can be used in Maven to created customized build configurations. This means customizing the behavior of our builds based on specific conditions. 
+
+ 
+
+For example: Sometimes we need to test whether the source code packaging is working correctly or not, in that case we can skip the test execution by activating the skip.tests property like below: 
+
+<profile> 
+    <id>skip-tests</id> 
+    <properties> 
+        <maven.test.skip>true</maven.test.skip> 
+    </properties> 
+</profile> 
+ 
+
+Now we can try to run the build by specifying which profile to activate using the -P flag. 
+
+$ mvn -Pskip-tests clean install 
+[INFO] Scanning for projects... 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] Reactor Build Order: 
+[INFO] 
+[INFO] maven-project                                                      [pom] 
+[INFO] child-project-1                                                    [jar] 
+[INFO] child-project-2                                                    [jar] 
+[INFO] child-project-3                                                    [jar] 
+[INFO] 
+[INFO] ---------------------< org.example:maven-project >---------------------- 
+[INFO] Building maven-project 1.0-SNAPSHOT                                [1/4] 
+[INFO] --------------------------------[ pom ]--------------------------------- 
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ maven-project --- 
+[INFO] 
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ maven-project --- 
+[INFO] Installing F:\maven-project\pom.xml to C:\Users\subra\.m2\repository\org\example\maven-project\1.0-SNAPSHOT\maven-project-1.0-SNAPSHOT.pom 
+[INFO] 
+[INFO] --------------------< org.example:child-project-1 >--------------------- 
+[INFO] Building child-project-1 1.0-SNAPSHOT                              [2/4] 
+[INFO] --------------------------------[ jar ]--------------------------------- 
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ child-project-1 --- 
+[INFO] Deleting F:\maven-project\child-project-1\target 
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ child-project-1 --- 
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent! 
+[INFO] Copying 0 resource 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ child-project-1 --- 
+[INFO] Changes detected - recompiling the module! 
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent! 
+[INFO] Compiling 1 source file to F:\maven-project\child-project-1\target\classes 
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ child-project-1 --- 
+[INFO] Not copying test resources 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ child-project-1 --- 
+[INFO] Not compiling test sources 
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ child-project-1 --- 
+[INFO] Tests are skipped. 
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ child-project-1 --- 
+[INFO] Building jar: F:\maven-project\child-project-1\target\child-project-1-1.0-SNAPSHOT.jar 
+[INFO] 
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ child-project-1 --- 
+[INFO] Installing F:\maven-project\child-project-1\target\child-project-1-1.0-SNAPSHOT.jar to C:\Users\subra\.m2\repository\org\example\child-project-1\1.0-SNAPSHOT\child-project-1-1.0-SNAPSHOT.jar 
+[INFO] Installing F:\maven-project\child-project-1\pom.xml to C:\Users\subra\.m2\repository\org\example\child-project-1\1.0-SNAPSHOT\child-project-1-1.0-SNAPSHOT.pom 
+[INFO] 
+[INFO] --------------------< org.example:child-project-2 >--------------------- 
+[INFO] Building child-project-2 1.0-SNAPSHOT                              [3/4] 
+[INFO] --------------------------------[ jar ]--------------------------------- 
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ child-project-2 --- 
+[INFO] Deleting F:\maven-project\child-project-2\target 
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ child-project-2 --- 
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent! 
+[INFO] Copying 0 resource 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ child-project-2 --- 
+[INFO] Changes detected - recompiling the module! 
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent! 
+[INFO] Compiling 1 source file to F:\maven-project\child-project-2\target\classes 
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ child-project-2 --- 
+[INFO] Not copying test resources 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ child-project-2 --- 
+[INFO] Not compiling test sources 
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ child-project-2 --- 
+[INFO] Tests are skipped. 
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ child-project-2 --- 
+[INFO] Building jar: F:\maven-project\child-project-2\target\child-project-2-1.0-SNAPSHOT.jar 
+[INFO] 
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ child-project-2 --- 
+[INFO] Installing F:\maven-project\child-project-2\target\child-project-2-1.0-SNAPSHOT.jar to C:\Users\subra\.m2\repository\org\example\child-project-2\1.0-SNAPSHOT\child-project-2-1.0-SNAPSHOT.jar 
+[INFO] Installing F:\maven-project\child-project-2\pom.xml to C:\Users\subra\.m2\repository\org\example\child-project-2\1.0-SNAPSHOT\child-project-2-1.0-SNAPSHOT.pom 
+[INFO] 
+[INFO] --------------------< org.example:child-project-3 >--------------------- 
+[INFO] Building child-project-3 1.0-SNAPSHOT                              [4/4] 
+[INFO] --------------------------------[ jar ]--------------------------------- 
+[INFO] 
+[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ child-project-3 --- 
+[INFO] Deleting F:\maven-project\child-project-3\target 
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ child-project-3 --- 
+[WARNING] Using platform encoding (Cp1252 actually) to copy filtered resources, i.e. build is platform dependent! 
+[INFO] Copying 0 resource 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ child-project-3 --- 
+[INFO] Changes detected - recompiling the module! 
+[WARNING] File encoding has not been set, using platform encoding Cp1252, i.e. build is platform dependent! 
+[INFO] Compiling 1 source file to F:\maven-project\child-project-3\target\classes 
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:testResources (default-testResources) @ child-project-3 --- 
+[INFO] Not copying test resources 
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ child-project-3 --- 
+[INFO] Not compiling test sources 
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ child-project-3 --- 
+[INFO] Tests are skipped. 
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ child-project-3 --- 
+[INFO] Building jar: F:\maven-project\child-project-3\target\child-project-3-1.0-SNAPSHOT.jar 
+[INFO] 
+[INFO] --- maven-install-plugin:2.5.2:install (default-install) @ child-project-3 --- 
+[INFO] Installing F:\maven-project\child-project-3\target\child-project-3-1.0-SNAPSHOT.jar to C:\Users\subra\.m2\repository\org\example\child-project-3\1.0-SNAPSHOT\child-project-3-1.0-SNAPSHOT.jar 
+[INFO] Installing F:\maven-project\child-project-3\pom.xml to C:\Users\subra\.m2\repository\org\example\child-project-3\1.0-SNAPSHOT\child-project-3-1.0-SNAPSHOT.pom 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] Reactor Summary for maven-project 1.0-SNAPSHOT: 
+[INFO] 
+[INFO] maven-project ...................................... SUCCESS [  0.327 s] 
+[INFO] child-project-1 .................................... SUCCESS [  1.208 s] 
+[INFO] child-project-2 .................................... SUCCESS [  0.205 s] 
+[INFO] child-project-3 .................................... SUCCESS [  0.167 s] 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] BUILD SUCCESS 
+[INFO] ------------------------------------------------------------------------ 
+[INFO] Total time:  2.055 s 
+[INFO] Finished at: 2020-12-05T23:00:13+01:00 
+[INFO] ------------------------------------------------------------------------ 
+ 
+
+If you observe the logs carefully, you can see that the test-execution is skipped: 
+
+[INFO] Not compiling test sources 
+[INFO] 
+[INFO] --- maven-surefire-plugin:2.22.2:test (default-test) @ child-project-3 --- 
+[INFO] Tests are skipped. 
+[INFO] 
+[INFO] --- maven-jar-plugin:2.4:jar (default-jar) @ child-project-3 --- 
+[INFO] Building jar: F:\maven-project\child-project-3\target\child-project-3-1.0-SNAPSHOT.jar 
+ 
+
+This is just a simple usage of the profiles, you can configure multiple profiles in our project to customize the build behavior. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
