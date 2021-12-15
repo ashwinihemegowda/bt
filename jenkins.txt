@@ -1,0 +1,319 @@
+https://docs.microsoft.com/en-us/azure/developer/jenkins/configure-on-linux-vm 
+
+ 
+
+https://github.com/cloudogu/jenkinsfiles 
+
+ 
+
+https://github.com/jenkinsci/pipeline-examples 
+
+ 
+
+https://github.com/jenkinsci/pipeline-plugin/blob/master/TUTORIAL.md 
+
+ 
+
+ 
+
+https://www.jenkins.io/doc/tutorials/build-a-java-app-with-maven/ 
+
+ 
+
+ 
+
+ 
+
+Pipeline Flow
+Pipeline concepts 
+
+The following concepts are key aspects of Jenkins Pipeline, which tie in closely to Pipeline syntax (see the overview below). 
+
+ 
+
+Pipeline 
+
+A Pipeline is a user-defined model of a CD pipeline. A Pipeline’s code defines your entire build process, which typically includes stages for building an application, testing it and then delivering it. 
+
+Also, a pipeline block is a key part of Declarative Pipeline syntax. 
+
+ 
+
+Node 
+
+A node is a machine which is part of the Jenkins environment and is capable of executing a Pipeline. 
+
+Also, a node block is a key part of Scripted Pipeline syntax. 
+
+ 
+
+Stage 
+
+A stage block defines a conceptually distinct subset of tasks performed through the entire Pipeline (e.g. "Build", "Test" and "Deploy" stages), which is used by many plugins to visualize or present Jenkins Pipeline status/progress. [6] 
+
+Step 
+
+A single task. Fundamentally, a step tells Jenkins what to do at a particular point in time (or "step" in the process). For example, to execute the shell command make use the sh step: sh 'make'. When a plugin extends the Pipeline DSL, [1] that typically means the plugin has implemented a new step. 
+
+ 
+
+Pipeline syntax overview 
+
+The following Pipeline code skeletons illustrate the fundamental differences between Declarative Pipeline syntax and Scripted Pipeline syntax. 
+
+Be aware that both stages and steps (above) are common elements of both Declarative and Scripted Pipeline syntax. 
+
+ 
+
+Declarative Pipeline fundamentals 
+
+In Declarative Pipeline syntax, the pipeline block defines all the work done throughout your entire Pipeline. 
+
+ 
+
+Jenkinsfile (Declarative Pipeline) 
+
+ 
+
+pipeline { 
+    agent any stages { 
+        stage('Build') { steps { 
+                // } 
+        } 
+        stage('Test') { steps { 
+                // } 
+        } 
+        stage('Deploy') { steps { 
+                // } 
+        } 
+    } 
+} 
+
+ 
+
+ 
+
+Scripted Pipeline fundamentals 
+
+In Scripted Pipeline syntax, one or more node blocks do the core work throughout the entire Pipeline. Although this is not a mandatory requirement of Scripted Pipeline syntax, confining your Pipeline’s work inside of a node block does two things: 
+
+Schedules the steps contained within the block to run by adding an item to the Jenkins queue. As soon as an executor is free on a node, the steps will run. 
+
+Creates a workspace (a directory specific to that particular Pipeline) where work can be done on files checked out from source control. 
+Caution: Depending on your Jenkins configuration, some workspaces may not get automatically cleaned up after a period of inactivity. See tickets and discussion linked from JENKINS-2111 for more information. 
+
+ 
+
+Jenkinsfile (Scripted Pipeline) 
+
+node {  stage('Build') { // } 
+    stage('Test') { // } 
+    stage('Deploy') { // } 
+} 
+
+ 
+
+ 
+
+Pipeline example 
+
+Here is an example of a Jenkinsfile using Declarative Pipeline syntax - its Scripted syntax equivalent can be accessed by clicking the Toggle Scripted Pipeline link below: 
+
+ 
+
+Jenkinsfile (Declarative Pipeline) 
+
+pipeline { agent any options { 
+        skipStagesAfterUnstable() 
+    } 
+    stages { 
+        stage('Build') { steps { sh 'make'} 
+        } 
+        stage('Test'){ 
+            steps { 
+                sh 'make check'junit 'reports/**/*.xml'} 
+        } 
+        stage('Deploy') { 
+            steps { 
+                sh 'make publish'} 
+        } 
+    } 
+} 
+
+ 
+
+pipeline is Declarative Pipeline-specific syntax that defines a "block" containing all content and instructions for executing the entire Pipeline. 
+
+ 
+
+agent is Declarative Pipeline-specific syntax that instructs Jenkins to allocate an executor (on a node) and workspace for the entire Pipeline. 
+
+ 
+
+stage is a syntax block that describes a stage of this Pipeline. Read more about stage blocks in Declarative Pipeline syntax on the Pipeline syntax page.  
+
+As mentioned above, stage blocks are optional in Scripted Pipeline syntax. 
+
+ 
+
+steps is Declarative Pipeline-specific syntax that describes the steps to be run in this stage. 
+
+ 
+
+sh is a Pipeline step (provided by the Pipeline: Nodes and Processes plugin) that executes the given shell command. 
+
+ 
+
+junit is another Pipeline step (provided by the JUnit plugin) for aggregating test reports. 
+
+ 
+
+node is Scripted Pipeline-specific syntax that instructs Jenkins to execute this Pipeline (and any stages contained within it), on any available agent/node. This is effectively equivalent to agent in Declarative Pipeline-specific syntax. 
+
+ 
+
+ 
+
+ 
+
+// Declarative // 
+
+pipeline { 
+
+  agent any ① 
+
+  stages { 
+
+  stage('Build') { ② 
+
+  steps { ③ 
+
+  sh 'make' ④ 
+
+  } 
+
+  } 
+
+  stage('Test'){ 
+
+  steps { 
+
+  sh 'make check' 
+
+  junit 'reports/**/*.xml' ⑤ 
+
+  } 
+
+  } 
+
+  stage('Deploy') { 
+
+  steps { 
+
+  sh 'make publish' 
+
+  } 
+
+  } 
+
+  } 
+
+} 
+
+
+
+new
+
+
+
+Start Jenkins 
+
+Register the Jenkins service with the command: 
+
+ 
+
+sudo systemctl daemon-reload 
+
+You can start the Jenkins service with the command: 
+
+ 
+
+sudo systemctl start jenkins 
+
+You can check the status of the Jenkins service using the command: 
+
+ 
+
+sudo systemctl status jenkins 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Freestyle projects are for orchestration simple jobs for a project. 
+
+ 
+
+Pipeline Project is better either to set up a CD pipeline or to define the deployment pipeline as code. The pipeline project is suitable to build pipelines for complex jobs whereas the freestyle project is suitable for simple jobs. 
+
+ 
+
+http://20.121.8.171:8080/pipeline-syntax/ 
+
+ 
+
+Groove script  
+
+ 
+
+https://www.jenkins.io/doc/book/pipeline/syntax/#compare 
+
+ 
+
+ 
+
+Scripted Pipeline 
+
+Scripted Pipeline, like Declarative Pipeline, is built on top of the underlying Pipeline sub-system.  
+
+ 
+
+Unlike Declarative, Scripted Pipeline is effectively a general-purpose DSL [2] built with Groovy. Most functionality provided by the Groovy language is made available to users of Scripted Pipeline, which means it can be a very expressive and flexible tool with which one can author continuous delivery pipelines 
+
+ 
+
+Both are fundamentally the same Pipeline sub-system underneath.  
+
+ 
+
+They are both durable implementations of "Pipeline as code." They are both able to use steps built into Pipeline or provided by plugins.  
+
+Both are able to utilize Shared Libraries 
+
+ 
+
+Where they differ however is in syntax and flexibility. 
+
+ 
+
+ Declarative limits what is available to the user with a more strict and pre-defined structure, making it an ideal choice for simpler continuous delivery pipelines. 
+
+ 
+
+ Scripted provides very few limits, insofar that the only limits on structure and syntax tend to be defined by Groovy itself, rather than any Pipeline-specific systems, making it an ideal choice for power-users and those with more complex requirements.  
+
+ 
+
+As the name implies, Declarative Pipeline encourages a declarative programming model. [3] Whereas Scripted Pipelines follow a more imperative programming model. [4] 
+
+ 
+
+ 
+
+ 
